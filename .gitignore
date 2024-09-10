@@ -1,0 +1,36 @@
+# Dependency directories
+node_modules/
+
+# Next.js build output
+.next/
+
+# Environment configuration files
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Log files
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+
+# TypeScript output
+*.tsbuildinfo
+
+
+yarn.lock
+package-lock.json
+
+# Next.js cache and build artifacts
+.next/
+out/
+
+# ESLint cache (if any)
+.eslintcache

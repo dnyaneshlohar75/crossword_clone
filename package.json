@@ -1,0 +1,34 @@
+{
+  "name": "crossword",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "antd": "^5.20.6",
+    "crossword": "file:",
+    "framer-motion": "^11.3.31",
+    "next": "^14.2.7",
+    "next-auth": "^4.24.7",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-icons": "^5.3.0",
+    "react-multi-carousel": "^2.8.5",
+    "react-slick": "^0.30.2",
+    "slick-carousel": "^1.8.1",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.7"
+  }
+}
