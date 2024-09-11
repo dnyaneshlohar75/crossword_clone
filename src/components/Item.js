@@ -17,10 +17,13 @@ import NextLink from "next/link";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import useCart from "@/providers/CartState";
 
 const Item = ({ id, image, name, author, price, discount }) => {
   const { data } = useSession();
   const toast = useToast();
+
+  const { cart, addProduct, addInitialCartData } = useCart();
 
   //Math.abs((product.product.price * (product.product.discount/100)) - product.product.price);
 
@@ -42,42 +45,43 @@ const Item = ({ id, image, name, author, price, discount }) => {
 
     const resp = await endpoint.json();
 
-    console.log(resp)
-
   }
 
   const handleAddToBag = async () => {
-    const endpoint = await fetch("http://localhost:8000/api/cart/addtocart", {
-      method: "POST",
-      body: JSON.stringify({
-        productId: id,
-        userId: data?.user?.userId,
-        quantity: 1
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    addProduct({ _id: id, image, quantity: 1, name, author, price, discount })
+    
+    // const endpoint = await fetch("http://localhost:8000/api/cart/addtocart", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     productId: id,
+    //     userId: data?.user?.userId,
+    //     quantity: 1
+    //   }),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
 
-    const resp = await endpoint.json();
+    // const resp = await endpoint.json();
 
-    if (resp.success) {
-      toast({
-        title: `${resp.message}`,
-        description: `${name} has been added to your bag.`,
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-    } else {
-      toast({
-        title: `${resp.message}`,
-        description: `${name} could not add into bag.`,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
+
+    // if (resp.success) {
+    //   toast({
+    //     title: `${resp.message}`,
+    //     description: `${name} has been added to your bag.`,
+    //     status: "success",
+    //     duration: 3000,
+    //     isClosable: true,
+    //   });
+    // } else {
+    //   toast({
+    //     title: `${resp.message}`,
+    //     description: `${name} could not add into bag.`,
+    //     status: "error",
+    //     duration: 3000,
+    //     isClosable: true,
+    //   });
+    // }
   };
 
   return (

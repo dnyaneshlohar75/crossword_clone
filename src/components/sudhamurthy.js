@@ -103,11 +103,7 @@ const SudhaMurthy = ({ category }) => {
     <Box p={5}>
       <Heading mt={10} textAlign="center" fontSize="30px" fontWeight={500}>Sudha Murthy Books</Heading>
       {books.length > 0 ? (
-        <Carousel style={{
-          display: "grid",
-          gridColumn: 5,
-          gap: 8
-        }} nextArrow={<h1>back</h1>} prevArrow={<h1>forward</h1>} arrows = {true} dots = {false} infinite={false}>
+        <Carousel nextArrow={<h1>back</h1>} prevArrow={<h1>forward</h1>} arrows = {true} dots = {false} infinite={false}>
             {books.map((book) => (
               <Item
                 key={book._id}

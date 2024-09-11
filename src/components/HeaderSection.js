@@ -1,15 +1,18 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Box, Flex, Image, Text, Input, Button, Avatar } from '@chakra-ui/react';
+import { Box, Flex, Image, Text, Input, Button, Avatar, Badge } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { IoPersonSharp, IoBagOutline } from 'react-icons/io5';
 import { FaHeart } from 'react-icons/fa';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import useCart from '@/providers/CartState';
 
 const HeaderSection = () => {
+
+  const { cart } = useCart();
 
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
@@ -103,8 +106,15 @@ const HeaderSection = () => {
         <Link href = "/wishlist">
           <FaHeart size={24} style={{ marginLeft: 20 }} />
         </Link>
-        <Link href = "/mybag">
+        <Link href = "/mybag" style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 8
+        }}>
           <IoBagOutline size={24} style={{ marginLeft: 20 }} />
+          <Badge colorScheme='green' >
+            {cart?.length || 0}
+          </Badge>
         </Link>
       </Flex>
     </Box>

@@ -17,12 +17,12 @@ import {
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
-import Header from '@/components/header';
-import HeaderSection from '@/components/HeaderSection';
-import TextSlider from '@/components/Textslider';
-import CategoryTags from '@/components/Categorytags';
+import { useSearchParams } from 'next/navigation';
 
 const ReviewPage = () => {
+  const params = useSearchParams();
+  const productId = params.get('id');
+
   const [title, setTitle] = useState('');
   const [review, setReview] = useState('');
   const [rating, setRating] = useState(0);
@@ -31,19 +31,44 @@ const ReviewPage = () => {
   const [file, setFile] = useState(null);
   const toast = useToast();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
 
-    const data = {
-      
-    }
+    const endpoint = await fetch("http://localhost:8000/api/books/review", {
+      method: "POST",
+      body: JSON.stringify({
+        productId,
+        title,
+        content: review,
+        rating,
+        name,
+        email
+
+      }),
+      headers: {
+        "Content-Type" : "application/json"
+      }
+    })
+
+    const response = await endpoint.json();
+
     
-    toast({
-      title: "Review Submitted",
-      description: "Thank you for your review!",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
+    if(response.success) {
+      toast({
+        title: "Review Submitted",
+        description: "Thank you for your review!",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Review not Submitted",
+        description: "Error while submitting review",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   const handleStarClick = (num) => {
@@ -52,10 +77,6 @@ const ReviewPage = () => {
 
   return (
     <Container maxW="container.x" py={8}>
-      <Header /> 
-      <HeaderSection />
-      <CategoryTags />
-      <TextSlider />
       <Box textAlign="center">
         <Heading mb={6} mt={5} fontSize={25} color="#444444">
           Write a Review
@@ -86,6 +107,7 @@ const ReviewPage = () => {
             <Input
               placeholder="Give your review a title"
               value={title}
+              onChange={(e) => setTitle(e.target.value)}
               color="black" 
               border="1px solid black"
               borderRadius="none" 

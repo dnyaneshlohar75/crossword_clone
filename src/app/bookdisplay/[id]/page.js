@@ -1,9 +1,4 @@
 "use client";
-
-import Header from '@/components/header';
-import HeaderSection from '@/components/HeaderSection';
-import CategoryTags from '@/components/Categorytags';
-import TextSlider from '@/components/Textslider';
 import { useRouter } from 'next/navigation';
 
 import {
@@ -35,9 +30,7 @@ const BookDisplay = ({params}) => {
   const [product, setProduct] = useState({});
   const router = useRouter();
 
-  const handleWriteReview = () => {
-    router.push('/review'); 
-  };
+ 
 
   const handleAddToBag = async () => {
     const endpoint = await fetch("http://localhost:8000/api/cart/addtocart", {
@@ -91,15 +84,12 @@ const BookDisplay = ({params}) => {
 
   }, [productId]);
 
-  console.log(product);
+  const handleWriteReview = () => {
+    router.push(`/review?id=${productId}`); 
+  };
 
   return (
     <Container maxW="container.x" py={0}>
-      <Header />
-      <HeaderSection />
-      <CategoryTags/>
-      <TextSlider/>
-
       <Box ml={8}>
         <Breadcrumb mb={6} separator={<ChevronRightIcon color="gray.500" />}>
           <BreadcrumbItem>
