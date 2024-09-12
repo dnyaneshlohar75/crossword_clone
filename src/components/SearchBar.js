@@ -1,17 +1,16 @@
 "use client";
 
 import { Button, Flex, Input } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { AiOutlineSearch } from 'react-icons/ai'
+
 export default function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
 
   const handleSearch = () => {
-    const url = new URL("http://localhost:3000/search");
-    url.searchParams.set("query", searchQuery);
-
+    const url = new URL(`http://localhost:3000/search/${searchQuery}`);
     router.push(url.toString());
   };
 

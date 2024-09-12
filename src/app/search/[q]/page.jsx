@@ -3,21 +3,15 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Box, Button, Card, CardBody, CardFooter, Container, Heading, Image, Stack, Text } from "@chakra-ui/react";
-import Header from "@/components/header";
-import HeaderSection from "@/components/HeaderSection";
-import CategoryTags, {
-  categories,
-  categoriesList,
-} from "@/components/Categorytags";
 
-export default function page() {
+export default function page({params}) {
   const [searchResults, setSearchResults] = useState();
-  const searchParams = useSearchParams();
+  const query = params?.q;
 
   useEffect(() => {
     async function getBooks() {
       const response = await fetch(
-        `http://localhost:8000/api/books/find/${searchParams.get("query")}`,
+        `http://localhost:8000/api/books/find/${query}`,
         {
           method: "GET",
           headers: {
@@ -31,15 +25,10 @@ export default function page() {
     }
 
     getBooks();
-  }, []);
-
-  console.log(searchResults);
+  }, [query]);
 
   return (
     <Container p={0} maxW="100%" m={0}>
-      <Header />
-      <HeaderSection />
-      <CategoryTags />
       <Box p={8}>
         <Heading fontSize={24}>Search Results</Heading>
 
