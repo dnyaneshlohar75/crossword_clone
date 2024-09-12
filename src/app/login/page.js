@@ -1,9 +1,6 @@
 "use client";
 
 import { Box, Container, Image, Text, FormControl, FormLabel, Input, Button, Flex, Divider, useToast, Heading } from '@chakra-ui/react';
-import Header from '@/components/header';
-import HeaderSection from '@/components/HeaderSection';
-import TextSlider from '@/components/Textslider';
 import { useState } from 'react';
 import Link from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
@@ -20,22 +17,21 @@ const Login = () => {
   const toast = useToast();
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = () => {
+    setLoading(true);
 
     signIn('credentials', {
       email: emailId,
       password: password
     }).then((result) => {
-      console.log(result);
+        setLoading(false);
     });
   }
 
   return (
     <Container maxW="container.x">
-      <Header />
-      <HeaderSection />
-      <TextSlider />
       <Flex
         direction={{ base: "column", md: "row" }}
         align="center"
@@ -77,6 +73,7 @@ const Login = () => {
               width="400px"
               height={10}
               onClick={handleLogin}
+              isLoading = {loading}
             >
               Login
             </Button>

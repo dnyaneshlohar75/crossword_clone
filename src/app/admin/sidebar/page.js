@@ -1,5 +1,6 @@
 'use client'; 
 
+import LogoutButton from '@/components/LogoutButton';
 import { Box, Flex, Text, Link as ChakraLink, Image } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
@@ -50,6 +51,7 @@ const Sidebar = () => {
               <Text fontWeight={600}>Product List</Text>
             </Flex>
           </ChakraLink>
+          <LogoutButton />
         </Flex>
       </Box>
   );

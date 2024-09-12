@@ -47,7 +47,7 @@ const CategoryTags = () => {
     >
       <Flex wrap="nowrap" align="center" justifyContent="center">
         {categories.map((category, index) => (
-          <Menu key={index} closeOnSelect={false}>
+          <Menu key={index} closeOnSelect={false} >
             <MenuButton
               as={Button}
               variant="link"
@@ -77,7 +77,7 @@ const CategoryTags = () => {
                     <MenuItem key={i}>{item}</MenuItem>
                   ))}
                 </Box>
-                </Box>     
+                </Box>
               </Grid>
             </MenuList>
           </Menu>

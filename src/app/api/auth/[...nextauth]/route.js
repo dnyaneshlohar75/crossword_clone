@@ -1,9 +1,10 @@
 import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials"; "next-auth/providers/credentials";
+import Credentials from "next-auth/providers/credentials";import { NextResponse } from "next/server";
+ "next-auth/providers/credentials";
 
 export const authOptions = {
   strategy: "jwt",
-  secret: "LlKq6ZtYbr+hTC073mAmAh9/h2HwMfsFo4hrfCx5mLg=",
+  secret: "LlKq6ZtYbr+hTC073mAmAh9/h2HwMfsFo4hrfCx5mLg",
 
   providers: [
     Credentials({
@@ -30,8 +31,6 @@ export const authOptions = {
           })
 
           const { userExist } = await User.json();
-
-          console.log(userExist);
           return userExist;
         }
       }),
@@ -43,13 +42,15 @@ export const authOptions = {
           token.image = session.user.image
           token.userId = session.user._id
           token.name = session.user.name
+          token.role = session.user.role
       }
       if(user) {
         return {
           ...token,
           image: user.image,
           userId: user._id,
-          name: user.name
+          name: user.name,
+          role: user.role
         };
       }
       return token;
@@ -61,7 +62,8 @@ export const authOptions = {
           ...session.user,
           image: token.image,
           userId: token.userId,
-          name: token.name
+          name: token.name,
+          role: token.role
         },
       };
     }

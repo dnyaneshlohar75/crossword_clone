@@ -1,32 +1,25 @@
-"use client";
-
-import CategoryTags from '@/components/Categorytags';
-import Header from '@/components/header';
-import HeaderSection from '@/components/HeaderSection';
-import { Box, Button, Container, Heading } from '@chakra-ui/react'
-import { signOut, useSession } from 'next-auth/react'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import LogoutButton from '@/components/LogoutButton';
+import { Box, Container, Heading } from '@chakra-ui/react'
+import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
-import React, { useEffect } from 'react'
 
-export default function page() {
-  const { data, status } = useSession();
+export default async function page() {
+  const session = await getServerSession(authOptions);
 
-  useEffect(() => {
-    if(status === "unauthenticated") {
-        redirect("/login");
-    }
-  }, [status]);
+  if(session?.user?.role !== 'User') {
+    redirect('/login');
+  }
+
+  if(session?.user?.role === 'Admin') {
+    redirect('/admin')
+  }
 
   return (
     <Container p={0} maxW="100%" m={0}>
-     <Header /> 
-     <HeaderSection />
-     <CategoryTags/>
       <Box>
         <Heading>I am Logged In</Heading>
-        <Button onClick={() => signOut({
-            redirect: "/login"
-        })}>Logout</Button>
+        <LogoutButton />
     </Box>
     </Container>
   )
