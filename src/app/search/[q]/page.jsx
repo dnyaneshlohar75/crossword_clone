@@ -33,7 +33,7 @@ export default function page({params}) {
         <Heading fontSize={24}>Search Results</Heading>
 
         {searchResults?.map((result) => (
-            <Card
+          <Card
             key={result._id}
             direction={{ base: "column", sm: "row" }}
             overflow="hidden"
