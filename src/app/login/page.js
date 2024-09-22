@@ -8,10 +8,14 @@ import { redirect } from 'next/navigation';
 
 const Login = () => {
 
-  const { status } = useSession();
+  const { status, data } = useSession();
 
   if(status === 'authenticated') {
-    redirect("/")
+    if(data?.user?.role === 'User') {
+      redirect('/user/dashboard')
+    } else if(data?.user?.role === 'Admin') {
+      redirect('/admin')
+    }
   }
   
   const toast = useToast();

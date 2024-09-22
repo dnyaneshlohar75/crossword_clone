@@ -6,7 +6,7 @@ import React from 'react'
 
 export default function LogoutButton() {
   return (
-    <Button onClick={() => signOut({
+    <Button fontSize="small" fontWeight="400" variant="ghost" onClick={() => signOut({
         redirect: "/login"
     })}>Logout</Button>
   )

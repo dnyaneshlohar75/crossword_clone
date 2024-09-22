@@ -6,10 +6,8 @@ import {
   Button,
   Container,
   Flex,
-  Heading,
   ButtonGroup,
   Image,
-  Stack,
   Select,
   Text,
   VStack,
@@ -31,7 +29,8 @@ const BookDisplay = ({ params }) => {
   const [product, setProduct] = useState({});
   const [reviews, setReviews] = useState([]);
   const router = useRouter();
-
+  const toast = useToast();
+  
   const calculateAvarageRating = () => {
     let r = 0;
     reviews?.map((review) => {

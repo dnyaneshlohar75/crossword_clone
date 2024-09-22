@@ -43,6 +43,7 @@ export const authOptions = {
           token.userId = session.user._id
           token.name = session.user.name
           token.role = session.user.role
+          token.mobile_number = session.user.mobileNumber
       }
       if(user) {
         return {
@@ -50,7 +51,8 @@ export const authOptions = {
           image: user.image,
           userId: user._id,
           name: user.name,
-          role: user.role
+          role: user.role,
+          mobile_number: user.mobileNumber
         };
       }
       return token;
@@ -63,7 +65,8 @@ export const authOptions = {
           image: token.image,
           userId: token.userId,
           name: token.name,
-          role: token.role
+          role: token.role,
+          mobile_number: token.mobile_number
         },
       };
     }
