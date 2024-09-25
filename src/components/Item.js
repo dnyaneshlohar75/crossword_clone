@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Image,
@@ -14,7 +14,8 @@ import {
   CardFooter,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import { IoMdHeartEmpty } from "react-icons/io";
+import { IoMdHeartEmpty, IoMdHeart } from "react-icons/io";
+
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import useCart from "@/providers/CartState";
@@ -25,31 +26,71 @@ const Item = ({ id, image, name, author, price, discount }) => {
 
   const { cart, addProduct, addInitialCartData } = useCart();
 
-  //Math.abs((product.product.price * (product.product.discount/100)) - product.product.price);
+  const [wishlist, setWishlist] = useState([]);
+  const [isInWishlist, setIsInWishlist] = useState(false);
 
-  const discountedPrice = Math.abs((price * (discount/100)) - price);
+  const discountedPrice = Math.abs(price * (discount / 100) - price);
+
+  function isExist(productid) {
+      return cart?.some(book => book._id === productid);
+  }
 
   const handleWishlist = async () => {
-
-    const endpoint = await fetch("http://localhost:8000/api/users/wishlist/add", {
-      method: "POST",
-      body: JSON.stringify({
-        productId: id,
-        userId: data?.user?.userId,
-        quantity: 1
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const endpoint = await fetch(
+      "http://localhost:8000/api/users/wishlist/add",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          productId: id,
+          userId: data?.user?.userId,
+          quantity: 1,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     const resp = await endpoint.json();
 
+    console.log(resp);
+
+    setWishlist(resp.wishlist?.products);
+  };
+
+  const removeFromWishlist = async () => {
+    const endpoint = await fetch(
+      "http://localhost:8000/api/users/wishlist/remove",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          productId: id,
+          userId: data?.user?.userId,
+          quantity: 1,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const resp = await endpoint.json();
+
+    console.log(resp);
+
+    setWishlist(resp.wishlist?.products);
   }
 
+  useEffect(() => {
+    console.log(wishlist);
+    if(wishlist?.some(book => book.product === id)) {
+      setIsInWishlist(true);
+    }
+  }, [handleWishlist, wishlist]);
+
   const handleAddToBag = async () => {
-    addProduct({ _id: id, image, quantity: 1, name, author, price, discount })
-    
+    addProduct({ _id: id, image, quantity: 1, name, author, price, discount });
+
     // const endpoint = await fetch("http://localhost:8000/api/cart/addtocart", {
     //   method: "POST",
     //   body: JSON.stringify({
@@ -63,7 +104,6 @@ const Item = ({ id, image, name, author, price, discount }) => {
     // });
 
     // const resp = await endpoint.json();
-
 
     // if (resp.success) {
     //   toast({
@@ -89,15 +129,17 @@ const Item = ({ id, image, name, author, price, discount }) => {
       <CardBody>
         <Image src={image} alt={""} borderRadius="lg" />
         <Stack mt="6" spacing="3">
-          <Link href = {`/bookdisplay/${id}`}>
-            <Heading size="sm" noOfLines={1}>{name}</Heading>
+          <Link href={`/bookdisplay/${id}`}>
+            <Heading size="sm" noOfLines={1}>
+              {name}
+            </Heading>
           </Link>
           <Text>{author}</Text>
           <Box display={"flex"} alignItems={"center"} gap={3}>
             <Text color="blue.600" fontSize="xl">
               {`₹ ${discountedPrice}`}
             </Text>
-            <Text as='s' color="gray" fontSize="medium">
+            <Text as="s" color="gray" fontSize="medium">
               {`₹ ${price}`}
             </Text>
             <Text color="gray" fontSize="medium">
@@ -109,12 +151,34 @@ const Item = ({ id, image, name, author, price, discount }) => {
       <Divider />
       <CardFooter>
         <ButtonGroup spacing="2">
-          <Button variant="solid" colorScheme="blue" onClick={() => handleWishlist()}>
-            Wishlist
+          {isInWishlist ? 
+          <Button
+          variant="solid"
+          colorScheme="blue"
+          onClick={() => removeFromWishlist()}
+          >
+            <IoMdHeart />
           </Button>
-          <Button variant="ghost" colorScheme="blue" onClick={() => handleAddToBag()}>
-            Add to bag
+          :
+          <Button
+          variant="solid"
+          colorScheme="blue"
+          onClick={() => handleWishlist()}
+          >
+            <IoMdHeartEmpty />
           </Button>
+          }
+          {isExist(id) ? (
+            <Button>Go to Bag</Button>
+          ) : (
+            <Button
+              variant="ghost"
+              colorScheme="blue"
+              onClick={() => handleAddToBag()}
+            >
+              Add to bag
+            </Button>
+          )}
         </ButtonGroup>
       </CardFooter>
     </Card>

@@ -15,7 +15,7 @@ const useCart = create(persist(
       
         addProduct: (product) => {
           set((state) => ({
-            cart: [...state.cart, product],
+            cart: state?.cart?.includes({_id: product.id}) ? [...state.cart.map((item) => item._id === product.id ? { ...item, quantity: item.quantity + 1 } : item)] : [...state.cart, product],
           }));
         },
       
