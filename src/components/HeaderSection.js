@@ -19,10 +19,12 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import useCart from "@/providers/CartState";
 import SearchBar from "./SearchBar";
-import LogoutButton from "./LogoutButton";
+import useWishlist from "@/providers/WishlistState";
 
 const HeaderSection = () => {
   const { cart } = useCart();
+  const { wishlist } = useWishlist();
+  
   const { data, status } = useSession();
 
   return (
@@ -75,8 +77,21 @@ const HeaderSection = () => {
           </Link>
         )}
 
-        <Link href="/wishlist">
+<Link
+          href="/wishlist"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            position:"relative"
+          }}
+        >
           <FaHeart size={24} style={{ marginLeft: 20 }} />
+          <Badge bg="black" color="white" borderRadius="100%" style= {{
+            position: "absolute",
+            right: "-5px",
+            top: "-3px"
+          }}>{wishlist?.length || 0}</Badge>
         </Link>
 
         <Link

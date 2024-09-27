@@ -17,9 +17,6 @@ export default function page() {
 
   return (
     <Container p={0} maxW="100%" m={0}>
-     <Header /> 
-     <HeaderSection />
-     <CategoryTags />
      <Wishlist />
     </Container>
   )
